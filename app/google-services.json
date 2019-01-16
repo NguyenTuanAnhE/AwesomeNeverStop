@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "21759616738",
+    "firebase_url": "https://awesome-c6121.firebaseio.com",
+    "project_id": "awesome-c6121",
+    "storage_bucket": "awesome-c6121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21759616738:android:9569ffda43f8554e",
+        "android_client_info": {
+          "package_name": "com.example.tuananhe.phaibay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "21759616738-hjc9gep6rb5dbdc34djquduk5d0iqp4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tuananhe.phaibay",
+            "certificate_hash": "6ebcc52d627cef1e108a6d286232cc552291a5a2"
+          }
+        },
+        {
+          "client_id": "21759616738-r6u6pst176nrpbcj1bhq6c96hbetjr0q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWbkNDDPxHdOOsVVz1jwzvIUTk5eQtNEc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "21759616738-r6u6pst176nrpbcj1bhq6c96hbetjr0q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
