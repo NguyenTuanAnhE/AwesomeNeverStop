@@ -12,4 +12,8 @@ class Navigator(private var mActivity: Activity) {
         mActivity.startActivity(intent)
     }
 
+    fun startService(intent: Intent) {
+        mActivity.startService(intent)
+    }
+
 }

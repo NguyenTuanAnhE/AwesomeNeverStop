@@ -1,13 +1,18 @@
 package com.example.tuananhe.phaibay.login
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.view.View
 import com.example.tuananhe.phaibay.R
 import com.example.tuananhe.phaibay.base.BaseActivity
 import com.example.tuananhe.phaibay.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
+
 
 class LoginActivity : BaseActivity(), View.OnFocusChangeListener {
 
@@ -17,7 +22,9 @@ class LoginActivity : BaseActivity(), View.OnFocusChangeListener {
 
     override fun initBinding(id: Int) {
         mMainActivityBinding = DataBindingUtil.setContentView(this, id)
-        mLoginModel = ViewModelProviders.of(this, LoginViewModelFactory(application, getNavigator())).get(LoginModel::class.java)
+        mLoginModel =
+                ViewModelProviders.of(this, LoginViewModelFactory(application, getNavigator()))
+                    .get(LoginModel::class.java)
         mMainActivityBinding.viewModel = mLoginModel
     }
 
@@ -28,7 +35,7 @@ class LoginActivity : BaseActivity(), View.OnFocusChangeListener {
     }
 
     override fun initComponent() {
-
+        checkBubblePermission()
     }
 
     override fun getContentLayout(): Int = R.layout.activity_login
@@ -43,6 +50,16 @@ class LoginActivity : BaseActivity(), View.OnFocusChangeListener {
             v?.background = getDrawable(R.drawable.border_edit_text_red)
         } else {
             v?.background = getDrawable(R.drawable.border_edit_text_gray)
+        }
+    }
+
+    private fun checkBubblePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:$packageName")
+            )
+            startActivityForResult(intent, 1)
         }
     }
 
