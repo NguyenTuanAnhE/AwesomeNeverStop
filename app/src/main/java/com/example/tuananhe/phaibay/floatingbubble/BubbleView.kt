@@ -11,7 +11,7 @@ import com.example.tuananhe.phaibay.R
 class BubbleView(
     private val mContext: Context,
     private val mWindowManager: WindowManager,
-    private val mListener: BubbleActionListener
+    private val mListener: BubbleActionListener?
 ) {
     private lateinit var mBubbleView: View
 
@@ -74,7 +74,7 @@ class BubbleView(
                     initialTouchX = event.rawX
                     initialTouchY = event.rawY
                     lastAction = event.action
-                    mListener.onBubbleMove()
+                    mListener?.onBubbleMove()
                     true
                 }
                 MotionEvent.ACTION_UP -> {
@@ -94,7 +94,7 @@ class BubbleView(
                             mWindowManager.updateViewLayout(mBubbleView, params)
                         }
                     }
-                    mListener.onBubbleIdle()
+                    mListener?.onBubbleIdle()
                     true
                 }
                 MotionEvent.ACTION_MOVE -> {

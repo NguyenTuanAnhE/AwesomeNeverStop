@@ -6,6 +6,7 @@ import android.os.Build
 import android.util.Log
 import android.view.*
 import com.example.tuananhe.phaibay.R
+import com.example.tuananhe.phaibay.util.BubbleUtil
 
 class DismissView(private val mContext: Context, private val mWindowManager: WindowManager) :
     BubbleActionListener {
@@ -42,28 +43,29 @@ class DismissView(private val mContext: Context, private val mWindowManager: Win
             )
         }
 
-        mParams.gravity = Gravity.BOTTOM
-//        mParams.x = (mDisplay.width + 64) / 2
-        mParams.y = mDisplay.height + 64
-        Log.d("dákjda", "asdadas ${mParams.y}  asdas ${mParams.x}")
+        mParams.gravity = Gravity.TOP or Gravity.START
+        val pixel = BubbleUtil.convertDipToPixel(mContext.resources, 64f)
+        mParams.x = mDisplay.width + pixel
+        mParams.y = mDisplay.height - pixel
 
         mWindowManager.addView(mDismissView, mParams)
     }
 
     override fun onBubbleMove() {
-        while (mParams.y > mDisplay.height / 4) {
-            mParams.y -= 10
-            Log.d("dákjda", "asdadas ${mParams.y}  asdas ${mParams.x} ok")
-            mWindowManager.updateViewLayout(mDismissView, mParams)
-        }
+//        while (mParams.y > mDisplay.height / 4) {
+//            mParams.y -= 10
+//            mWindowManager.updateViewLayout(mDismissView, mParams)
+//        }
     }
 
     override fun onBubbleIdle() {
-        while (mParams.y > mDisplay.height + 64) {
-            mParams.y += 10
-            Log.d("dákjda", "asdadas ${mParams.y}  asdas ${mParams.x} ok")
-            mWindowManager.updateViewLayout(mDismissView, mParams)
-        }
+//        mParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+//        mWindowManager.updateViewLayout(mDismissView, mParams)
+//        while (mParams.y > mDisplay.height / 4) {
+//            mParams.y -= 10
+//            Log.d("dákjda", "asdadas ${mParams.y}  asdas ${mParams.x} ok")
+//            mWindowManager.updateViewLayout(mDismissView, mParams)
+//        }
     }
 
     override fun onBubbleWantDismiss() {
