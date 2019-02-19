@@ -28,7 +28,7 @@ class BubbleView(
     private fun initBubbleView() {
 
         mBubbleView =
-                LayoutInflater.from(mContext).inflate(R.layout.layout_floating_bubble, null)
+            LayoutInflater.from(mContext).inflate(R.layout.layout_floating_bubble, null)
         //Create Layout param
         val params = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams(
@@ -65,7 +65,7 @@ class BubbleView(
         val display = mWindowManager.defaultDisplay
         val screenWith = display.width
 
-        mBubbleView.findViewById<ImageView>(R.id.image_bubble).setOnTouchListener { v, event ->
+        mBubbleView.findViewById<ImageView>(R.id.image_bubble).setOnTouchListener { _, event ->
 
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -74,7 +74,7 @@ class BubbleView(
                     initialTouchX = event.rawX
                     initialTouchY = event.rawY
                     lastAction = event.action
-                    mListener?.onBubbleMove()
+                    mListener?.onBubbleStartMove()
                     true
                 }
                 MotionEvent.ACTION_UP -> {
@@ -101,6 +101,10 @@ class BubbleView(
                     params.x = initialX + ((event.rawX - initialTouchX) * 1.1).toInt()
                     params.y = initialY + ((event.rawY - initialTouchY) * 1.1).toInt()
                     mWindowManager.updateViewLayout(mBubbleView, params)
+                    mListener?.onBubbleMove(
+                        (event.rawX - initialTouchX).toInt(),
+                        (event.rawY - initialTouchY).toInt()
+                    )
                     lastAction = event.action
                     true
                 }
