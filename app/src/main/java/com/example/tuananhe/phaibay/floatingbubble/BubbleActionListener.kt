@@ -2,11 +2,14 @@ package com.example.tuananhe.phaibay.floatingbubble
 
 interface BubbleActionListener {
 
-    fun onBubbleStartMove()
+    fun onBubbleStartMoveFromLeft(bubbleToCenter: Int)
+
+    fun onBubbleStartMoveFromRight(bubbleToCenter: Int)
 
     fun onBubbleIdle()
 
     fun onBubbleWantDismiss()
 
-    fun onBubbleMove(x: Int, y: Int)
+    fun onBubbleMove(distanceX: Int, distanceY: Int)
+
 }
