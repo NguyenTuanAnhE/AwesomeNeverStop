@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.graphics.Point
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.view.animation.AnimationUtils
@@ -111,17 +112,19 @@ class DismissView(private val mContext: Context, private val mWindowManager: Win
     }
 
     private fun dismissStartMove(x: Int) {
-        limitTop = mScreenPoint.y / 4
-        limitBottom = mScreenPoint.y / 7
+        Handler().post {
+            limitTop = mScreenPoint.y / 4
+            limitBottom = mScreenPoint.y / 7
 
-        mParams.x = x
-        mParams.y = limitBottom
-        mDismissView.visibility = View.VISIBLE
-        val hide = AnimationUtils.loadAnimation(mContext, R.anim.swipe_bottom)
-        mDismissView.startAnimation(hide)
-        mWindowManager.updateViewLayout(mFrameLayout, mParams)
-        initialX = mParams.x
-        initialY = mParams.y
+            mParams.x = x
+            mParams.y = limitBottom
+            mDismissView.visibility = View.VISIBLE
+            val hide = AnimationUtils.loadAnimation(mContext, R.anim.swipe_bottom)
+            mDismissView.startAnimation(hide)
+            mWindowManager.updateViewLayout(mFrameLayout, mParams)
+            initialX = mParams.x
+            initialY = mParams.y
+        }
     }
 
 }

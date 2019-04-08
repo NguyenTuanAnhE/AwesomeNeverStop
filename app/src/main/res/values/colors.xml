@@ -7,5 +7,6 @@
     <color name="red_standard">#F44336</color>
     <color name="red_standard_faded">#aaF44336</color>
     <color name="color_white">#fff</color>
+    <color name="color_transparent">#00000000</color>
     <color name="color_light_green">#00FF0A</color>
 </resources>

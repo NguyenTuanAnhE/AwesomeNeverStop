@@ -2,12 +2,15 @@ package com.example.tuananhe.phaibay.floatingbubble
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import com.example.tuananhe.phaibay.R
+import com.example.tuananhe.phaibay.signup.SignUpActivity
 
 class BubbleView(
     private val mContext: Context,
@@ -35,7 +38,7 @@ class BubbleView(
     private fun initBubbleView() {
 
         mBubbleView =
-                LayoutInflater.from(mContext).inflate(R.layout.layout_floating_bubble, null)
+            LayoutInflater.from(mContext).inflate(R.layout.layout_floating_bubble, null)
         //Create Layout param
         val params = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams(
@@ -77,40 +80,13 @@ class BubbleView(
         val screenWith = display.width
         var isMove = false
 
-        mBubbleView.findViewById<ImageView>(R.id.image_bubble).setOnTouchListener { _, event ->
-
+        mBubbleView.findViewById<ImageView>(R.id.image_bubble).setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     initialX = params.x
                     initialY = params.y
                     initialTouchX = event.rawX
                     initialTouchY = event.rawY
-                    lastAction = event.action
-                    true
-                }
-                MotionEvent.ACTION_UP -> {
-                    if (lastAction == MotionEvent.ACTION_DOWN) {
-                        // todo show control button
-                    }
-
-                    lastAction = event.action
-                    if (params.x < screenWith / 2) {
-                        while (params.x > 0) {
-                            params.x -= 10
-                            mWindowManager.updateViewLayout(mBubbleView, params)
-                        }
-                    } else {
-                        while (params.x < screenWith) {
-                            params.x += 10
-                            mWindowManager.updateViewLayout(mBubbleView, params)
-                        }
-                    }
-                    isMove = false
-                    mListener?.onBubbleIdle()
-                    true
-                }
-                MotionEvent.ACTION_MOVE -> {
-
                     if (!isMove) {
                         val distanceToCenter = (screenWith - mBubbleView.width) / 2
                         if (params.x < screenWith / 2) {
@@ -122,6 +98,46 @@ class BubbleView(
                         }
                         isMove = true
                     }
+                    lastAction = event.action
+                    true
+                }
+                MotionEvent.ACTION_UP -> {
+                    val handler = Handler()
+                    if (lastAction == MotionEvent.ACTION_DOWN) {
+                        // todo show control button
+                    }
+
+                    if (params.x < screenWith / 2) {
+                        handler.post(object : Runnable {
+                            override fun run() {
+                                if (params.x > 0) {
+                                    params.x -= 50
+                                    mWindowManager.updateViewLayout(mBubbleView, params)
+                                    handler.post(this)
+                                } else {
+                                    handler.removeCallbacks(this)
+                                }
+                            }
+                        })
+                    } else {
+                        handler.post(object : Runnable {
+                            override fun run() {
+                                if (params.x < screenWith - mBubbleView.width) {
+                                    params.x += 50
+                                    mWindowManager.updateViewLayout(mBubbleView, params)
+                                    handler.post(this)
+                                } else {
+                                    handler.removeCallbacks(this)
+                                }
+                            }
+                        })
+                    }
+                    isMove = false
+                    lastAction = event.action
+                    mListener?.onBubbleIdle()
+                    true
+                }
+                MotionEvent.ACTION_MOVE -> {
 
                     distanceX = ((event.rawX - initialTouchX) * 1.1).toInt()
                     distanceY = ((event.rawY - initialTouchY) * 1.1).toInt()
@@ -134,7 +150,7 @@ class BubbleView(
                     } else if (params.x > screenWith - mBubbleView.width) {
                         params.x = screenWith - mBubbleView.width
                     }
-                    Log.d("BubbleView", " param.x " + distanceX)
+                    Log.d("BubbleView", " param.x " + params.x)
                     mWindowManager.updateViewLayout(mBubbleView, params)
                     mListener?.onBubbleMove(distanceX, distanceY)
 
